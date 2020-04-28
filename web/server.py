@@ -44,7 +44,38 @@ def esmultiplo(num1,num2):
         return str("Si son multiplos")
     else:
         return str("No son multiplos")
-#-----------------
+#---------------------------
+#CRUD USER
+@app.route('/create_users/<uname>/<ufullname>/<upassword>/<uusername>')
+def create_users(uname,ufullname,upassword,uusername):
+    user = entities.User(
+        name = uname,
+        fullname = ufullname,
+        password = upassword,
+        username = uusername
+    )
+
+    #Persistir objeto
+    db_session = db.getSession(engine)
+    db_session.add(user)
+    db_session.commit()
+
+    return("User created")
+
+@app.route('/read_users')
+def read_users():
+    db_session = db.getSession(engine)
+    respuesta = db_session.query(entities.User)
+    users = respuesta[:]
+
+    mostrar = '<table> <tr> <th> Nombre </th><th> Apellido </th><th> Usuario </th><th> Contraseña </th> </tr>'
+
+    for i in range(len(users)):
+        usuarios = '<tr><td>'+str(users[i].name)+'</td><td>'+str(users[i].fullname)+'</td><td>'+str(users[i].username)+'</td><td>'+str(users[i].password)+'</td></tr>'
+        mostrar = mostrar + usuarios
+    mostrar = mostrar + '</table>'
+
+    return "All users read!" + mostrar
 
 if __name__ == '__main__':
     app.secret_key = ".."
