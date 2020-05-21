@@ -76,6 +76,33 @@ def read_users():
     mostrar = mostrar + '</table>'
 
     return "All users read!" + mostrar
+#--------------------------------------------------
+@app.route('/login/<uusername>/<upassword>')
+def login(uusername,upassword):
+    db_session = db.getSession(engine)
+    respuesta = db_session.query(entities.User).filter(
+        entities.User.username == uusername,
+        entities.User.password == upassword
+    )
+    users = respuesta[:]
+    if len(users)==1:
+        return "Welcome"
+    else:
+        return "Fail"
+
+#    db_session = db.getSession(engine)
+#    respuesta = db_session.query(entities.User)
+#    users = respuesta[:]
+#    for i in range(len(users)):
+#        if uusername == users[i].username:
+#            if upassword == users[i].password:
+#                return "Welcome"
+#        return "Fail"
+#    if uname == upassword:
+#        return "Welcome"
+#    else:
+#        return "Fail"
+
 
 if __name__ == '__main__':
     app.secret_key = ".."
