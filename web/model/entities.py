@@ -10,6 +10,8 @@ class User(connector.Manager.Base):
     password = Column(String(12))
     username = Column(String(12))
 
+
+
 class Message(connector.Manager.Base):
     __tablename__ = 'messages'
     id = Column(Integer, Sequence('message_id_seq'), primary_key=True)
